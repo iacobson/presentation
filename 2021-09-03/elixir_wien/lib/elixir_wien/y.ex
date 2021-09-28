@@ -11,7 +11,7 @@ defmodule Y do
   end
 
   def get_pid do
-    GenServer.call({:global, __MODULE__}, :get_pid)
+    GenServer.whereis({:global, __MODULE__})
   end
 
   def start_link(data \\ []) do
@@ -24,11 +24,6 @@ defmodule Y do
   def init(data) do
     Process.flag(:trap_exit, true)
     {:ok, data}
-  end
-
-  @impl true
-  def handle_call(:get_pid, _from, state) do
-    {:reply, self(), state}
   end
 
   @impl true

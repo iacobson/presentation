@@ -11,7 +11,7 @@ defmodule X do
   end
 
   def get_pid do
-    GenServer.call({:global, __MODULE__}, :get_pid)
+    GenServer.whereis({:global, __MODULE__})
   end
 
   def start_link(data \\ []) do
@@ -57,10 +57,6 @@ defmodule X do
   end
 
   @impl true
-  def handle_call(:get_pid, _from, state) do
-    {:reply, self(), state}
-  end
-
   def handle_call(:test_alive, _from, state) do
     response = Y.get_pid() |> Process.alive?()
     {:reply, response, state}
